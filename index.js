@@ -67,7 +67,7 @@ function looker ( input ) {
 	  return illLooker(spilt[1])
 	  break
 	case '線索':
-	  return wantedLooker(spilt[1])
+	  return wantedLooker(spilt)
 	  break
 	case '頻道':
 	  return chanel
