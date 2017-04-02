@@ -1,6 +1,7 @@
 const express = require('express')
 const request = require('request')
 const bodyParser = require('body-parser')
+const path = require('path')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -49,6 +50,10 @@ app.post('/in', (req, res) => {
 	})
   }
   res.sendStatus(200)
+})
+
+app.get('/pp.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pp.html'))
 })
 
 function looker ( input ) {
