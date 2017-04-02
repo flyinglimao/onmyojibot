@@ -44,7 +44,7 @@ function sendMsg ( sender, message ) {
       recipient: { id: sender },
       message: { text: message }
     }
-  )
+  })
 }
 
 app.get('/in', (req, res) => {
