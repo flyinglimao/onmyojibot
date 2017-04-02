@@ -61,7 +61,7 @@ function looker ( input ) {
 	  return wanted[spilt[1]] || '查無資料，請確定目標名稱正確，查詢線索請使用 線索 (條件)'
 	  break
 	case '副本':
-	  return mapLooker(spilt) || '查無資料，請確定目標名稱正確'
+	  return mapLooker(spilt[1]) || '查無資料，請確定目標名稱正確'
 	  break
 	case '圖鑑':
 	  return illLooker(spilt[1])
@@ -84,19 +84,7 @@ function looker ( input ) {
 function wantedLooker ( dex ) {
   let result
   if ( dex[1] ) {
-    let mat = hint[dex[1]]
-    if ( dex.length > 1 ) {
-	  dex.forEach( (clue) => {
-	    let tmp = hint[clue]
-		mat.forEach( (sp) => {
-		  if ( ! sp in tmp )
-            mat.splice( mat.indexOf(sp), 1)
-		})
-		result = '查詢結果為: ' + (mat.join(',') || '無資料')
-		if (mat.length === 1)
-		  result += wanted[mat[0]]
-	  } )
-    }
+	result = '查詢結果為: ' + (hint[dex[1]] || '無資料')
   } else 
     result = '沒有給予條件'
   return result
