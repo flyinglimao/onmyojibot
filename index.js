@@ -23,7 +23,7 @@ app.post('/in', (req, res) => {
     data.entry.forEach( (entry) => {
       entry.messaging.forEach( (event) => {
         if ( event.message )
-          sendMsg( event.message.sender.id, event.message.text )
+          sendMsg( event.sender.id, event.message.text )
         else
 		  console.log(' Error ')
 	  })
