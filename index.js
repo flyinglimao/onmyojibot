@@ -14,7 +14,7 @@ let map = require('./map.json')
 let illustration = require('./illustration.json')
 
 app.all('/', (req, res) => {
-  res.status(403).send('403 Permission Denied')
+  res.sendStatus(403)
 })
 
 app.post('/in', (req, res) => {
@@ -29,7 +29,7 @@ app.post('/in', (req, res) => {
 	  })
 	})
   }
-  res.status(200)
+  res.sendStatus(200)
 })
 
 function looker ( input ) {
