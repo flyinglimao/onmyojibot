@@ -22,10 +22,10 @@ app.post('/in', (req, res) => {
   if ( data.object === 'page' ) {
     data.entry.forEach( (entry) => {
       entry.messaging.forEach( (event) => {
-        if ( event.message )
+        if ( event.message ) {
 		  console.log(`Got msg: ${event.message.text}`)
           sendMsg( event.sender.id, event.message.text )
-        else
+        } else
 		  console.log(' Error ')
 	  })
 	})
