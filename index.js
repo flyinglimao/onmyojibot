@@ -9,7 +9,7 @@ const token = process.env.TOKEN || 'null'
 app.use( bodyParser.json() )
 app.use( bodyParser.urlencoded( {extended: true} ) )
 
-let wanted = require('./wanted.json')
+let wanted = require('./wanted.js')
 let map = require('./map.json')
 let illustration = require('./illustration.json')
 let chanel = `
@@ -19,6 +19,8 @@ let chanel = `
 覺醒材料頻道：886
 懸賞交換頻道：1700
 `
+
+console.log(wanted["大天狗"])
 
 app.all('/', (req, res) => {
   res.sendStatus(403)
@@ -42,7 +44,7 @@ app.post('/in', (req, res) => {
 })
 
 function looker ( input ) {
-  let spilt = input.match(/\S+/)
+  let spilt = input.match(/\S+/g)
   switch ( spilt[0] ){
     case '幫助':
 	  return help
