@@ -29,6 +29,7 @@ app.post('/in', (req, res) => {
 	  })
 	})
   }
+  res.status(200)
 })
 
 function looker ( input ) {
