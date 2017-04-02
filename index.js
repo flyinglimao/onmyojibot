@@ -10,11 +10,13 @@ app.all('/', (req, res) => {
 })
 
 app.post('/in', (req, res) => {
-  res.send('')
+  
 })
 
-app.all('/yadamama', (req, res) => {
-  res.send('YalaBomm')
+app.get('/in', (req, res) => {
+  if ( req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === 'YalaBomm' ) {
+    res.send( req.query['hub.challenge'] )
+  }
 })
 
 app.listen(port, () => { console.log(`Listening to ${port}`) })
