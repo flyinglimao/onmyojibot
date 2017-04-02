@@ -32,10 +32,6 @@ let autoReply =
 let cmdNotFound = 
 `無法辨識指令，輸入 幫助 查看哪些指令可以用`
 
-app.all('/', (req, res) => {
-  res.sendStatus(403)
-})
-
 app.post('/in', (req, res) => {
   let data = req.body
   if ( data.object === 'page' ) {
@@ -54,6 +50,10 @@ app.post('/in', (req, res) => {
 
 app.get('/pp.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'pp.html'))
+})
+
+app.all('/', (req, res) => {
+  res.sendStatus(403)
 })
 
 function looker ( input ) {
