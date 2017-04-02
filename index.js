@@ -83,8 +83,21 @@ function looker ( input ) {
 
 function wantedLooker ( dex ) {
   let result
-  if ( dex[1] ) {
-	result = '查詢結果為: ' + (hint[dex[1]] || '無資料')
+  dex.splice(0, 1)
+  if ( dex[0] ) {
+    let mat = hint[dex[1]]
+    if ( dex.length > 1 ) {
+	  dex.forEach( (clue) => {
+	    let tmp = hint[clue]
+		mat.forEach( (sp) => {
+		  if ( ! sp in tmp )
+            mat.splice( mat.indexOf(sp), 1)
+		})
+		result = '查詢結果為: ' + (mat.join(',') || '無資料')
+		if (mat.length === 1)
+		  result += '\n' + wanted[mat[0]]
+	  } )
+    }
   } else 
     result = '沒有給予條件'
   return result
