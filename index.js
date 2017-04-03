@@ -145,6 +145,7 @@ function sendMsg (sender, message) {
 }
 
 function comment (input) {
+  sendMsg(process.env.DEVID, input)
 }
 
 app.get('/in', (req, res) => {
