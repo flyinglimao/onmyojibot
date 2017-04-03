@@ -108,10 +108,10 @@ function wantedLooker (dex) {
         mat.forEach((sp) => {
           if (!(sp in tmp)) { mat.splice(mat.indexOf(sp), 1) }
         })
-        result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料'))
-        if (mat.length === 1) { result = result.concat(wanted[mat[0]]) }
       })
     }
+    result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料'))
+    if (mat.length === 1) { result = result.concat(wanted[mat[0]]) }
   } else { result = result.concat('沒有給予條件') }
   return result
 }
