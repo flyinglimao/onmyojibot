@@ -131,19 +131,19 @@ function mapLooker (dex) {
     })
     if (!mapID) {
       map.alias.forEach((alias) => {
-        alias.forEach((name) => {
-          if (dex[0].match(name)) {
-            mapID = alias[0]
-          }
-          console.log(dex[1])
-          console.log(mapID)
-          if (isNaN(dex[1])) {
-            mapID += dex[1]
-          } else {
-            mapID += chint.indexOf(dex[1]) + 1
-          }
-          console.log(mapID)
-        })
+        function () {
+          alias.forEach((name) => {
+            if (dex[0].match(name)) {
+              mapID = alias[0]
+              if (isNaN(dex[1])) {
+                mapID += dex[1]
+              } else {
+                mapID += chint.indexOf(dex[1]) + 1
+              }
+              return 0
+            }
+          })
+        })()
       })
     }
     result = result.concat(map.data[mapID] || '查無資料，若查詢御魂請以空白間隔層數（如：御魂 10），秘聞尚無資料')
