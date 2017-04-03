@@ -101,7 +101,7 @@ function wantedLooker (dex) {
   let result = []
   dex.splice(0, 1)
   if (dex[0]) {
-    let mat = hint[dex[1]]
+    let mat = hint[dex[0]]
     if (dex.length > 1) {
       dex.forEach((clue) => {
         let tmp = hint[clue]
