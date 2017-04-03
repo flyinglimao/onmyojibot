@@ -134,8 +134,7 @@ function mapLooker (dex) {
           if (dex[0].match(name)) {
             mapID = alias[0]
           }
-          if (mapID in ['a', 'b', 'c', 'd']) {
-          } else if (!isNaN(dex[1])) {
+          if (!isNaN(dex[1])) {
             mapID += dex[1]
           } else {
             mapID += chint.indexOf(dex[1]) + 1
@@ -143,7 +142,7 @@ function mapLooker (dex) {
         })
       })
     }
-    result = result.concat(map.data[mapID] || '查無資料，若查詢秘聞、御魂請以空白間隔層數（如：妖刀 10）')
+    result = result.concat(map.data[mapID] || '查無資料，若查詢御魂請以空白間隔層數（如：御魂 10），秘聞尚無資料')
   } else {
     result = result.concat('沒有給予條件')
   }
