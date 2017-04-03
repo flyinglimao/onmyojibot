@@ -92,7 +92,7 @@ function looker (input) {
       reply = reply.concat(autoReply)
       break
     default:
-      reply = reply.contact(cmdNotFound)
+      reply = reply.concat(cmdNotFound)
   }
   return reply
 }
