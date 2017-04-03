@@ -131,10 +131,10 @@ function mapLooker (dex) {
     if (!mapID) {
       map.alias.forEach((alias) => {
         (function () {
-          console.log(alias[0])
           alias.forEach((name) => {
             if (dex[0].match(name)) {
               mapID = alias[0]
+              console.log(mapID)
               if (isNaN(dex[1])) {
                 mapID += dex[1]
               } else {
