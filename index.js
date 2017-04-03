@@ -131,7 +131,7 @@ function mapLooker (dex) {
     })
     if (!mapID) {
       map.alias.forEach((alias) => {
-        function () {
+        (function () {
           alias.forEach((name) => {
             if (dex[0].match(name)) {
               mapID = alias[0]
