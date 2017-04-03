@@ -134,9 +134,9 @@ function mapLooker (dex) {
           alias.forEach((name) => {
             if (dex[0].match(name)) {
               mapID = alias[0]
-              console.log(mapID)
               if (isNaN(dex[1])) {
                 mapID += dex[1]
+              console.log(mapID)
               } else {
                 mapID += chint.indexOf(dex[1]) + 1
               }
