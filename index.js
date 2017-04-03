@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 let wanted = require('./wanted.js')
 let hint = require('./hint.js')
+let map = require('./map.js')
 
 let chanel =
 `章魚單車頻道：4747
@@ -41,7 +42,6 @@ app.post('/in', (req, res) => {
           let reply = looker(event.message.text)
           reply.forEach((msg) => {
             sendMsg(event.sender.id, msg)
-            console.log(event.sender.id)
           })
         } else { console.log(' Error ') }
       })
@@ -52,6 +52,13 @@ app.post('/in', (req, res) => {
 
 app.get('/pp.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'pp.html'))
+})
+
+app.get('/in', (req, res) => {
+  if (req.query['hub.mode'] === 'subscribe') {
+    if (req.query['hub.verify_token'] === 'YalaBomm') res.send(req.query['hub.challenge'])
+    else res.status(403)
+  }
 })
 
 app.all('/', (req, res) => {
@@ -109,12 +116,34 @@ function wantedLooker (dex) {
   return result
 }
 
+let chint = '一二三四五六七八九十'
+
 function mapLooker (dex) {
   let result = []
   dex.splice(0, 1)
   if (dex[0]) {
-    let mapID = map.alias[dex[0]]
-    result = result.concat(map.data(mapID))
+    let mapID
+    map.alias.forEach((alias) => {
+      if (dex[0] in alias) {
+        mapID = alias[0]
+      }
+    })
+    if (!mapID) {
+      map.alias.forEach((alias) => {
+        alias.forEach((name) => {
+          if (dex[0].match(name)) {
+            mapID = alias[0]
+          }
+          if ( mapID in ['a', 'b', 'c', 'd'] ){
+          } else if (!isNaN(dex[1])) {
+            mapID += dex[1]
+          } else {
+            mapID += chint.indexOf(dex[1]) + 1
+          }
+        })
+      })
+    }
+    result = result.concat(map.data[mapID] || '查無資料，若查詢秘聞、御魂請以空白間隔層數（如：妖刀 10）')
   } else {
     result = result.concat('沒有給予條件')
   }
@@ -125,21 +154,21 @@ function illLooker (dex) {
   let result = []
   dex.splice(0, 1)
   if (dex[0]) {
-    result = result.concat(ill[dex[0]])
+    result = result.concat(ill[dex[0]] || '查無資料，請輸入式神全名（大天狗 ✔；狗狗 ✗)')
   } else {
     result = result.concat('沒有給予條件')
   }
   return result
 }
 
-function sendMsg (sender, message) {
+function sendMsg (sender, message, isImg = false) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: token },
     method: 'POST',
     json: {
       recipient: { id: sender },
-      message: { text: message }
+      message: isImg ? {attachment: { type: 'image', payload: message }} : { text: message }
     }
   })
 }
@@ -147,12 +176,5 @@ function sendMsg (sender, message) {
 function comment (input) {
   sendMsg(process.env.DEVID, input)
 }
-
-app.get('/in', (req, res) => {
-  if (req.query['hub.mode'] === 'subscribe') {
-    if (req.query['hub.verify_token'] === 'YalaBomm') res.send(req.query['hub.challenge'])
-    else res.status(403)
-  }
-})
 
 app.listen(port, () => { console.log(`Listening to ${port}`) })
