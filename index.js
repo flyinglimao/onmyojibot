@@ -76,7 +76,7 @@ function looker (input) {
       reply = reply.concat(wanted[spilt[1]] || '查無資料，請確定目標名稱正確，查詢線索請使用 線索 (條件)')
       break
     case '副本':
-      reply = reply.concat(mapLooker(spilt[1]) || '查無資料，請確定目標名稱正確')
+      reply = reply.concat(mapLooker(spilt) || '查無資料，請確定目標名稱正確')
       break
     case '圖鑑':
       reply = reply.concat(illLooker(spilt[1]))
