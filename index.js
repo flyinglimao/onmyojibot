@@ -12,8 +12,6 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 let wanted = require('./wanted.js')
 let hint = require('./hint.js')
-let map = require('./map.js')
-let ill = require('./ill.js')
 
 let chanel =
 `章魚單車頻道：4747
@@ -43,6 +41,7 @@ app.post('/in', (req, res) => {
           let reply = looker(event.message.text)
           reply.forEach((msg) => {
             sendMsg(event.sender.id, msg)
+            console.log(event.sender.id)
           })
         } else { console.log(' Error ') }
       })
