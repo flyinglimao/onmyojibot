@@ -120,7 +120,6 @@ let chint = '一二三四五六七八九十'
 
 function mapLooker (dex) {
   let result = []
-  console.log(dex)
   dex.splice(0, 1)
   if (dex[0]) {
     let mapID
@@ -132,6 +131,7 @@ function mapLooker (dex) {
     if (!mapID) {
       map.alias.forEach((alias) => {
         (function () {
+          console.log(alias[0])
           alias.forEach((name) => {
             if (dex[0].match(name)) {
               mapID = alias[0]
