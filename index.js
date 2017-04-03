@@ -120,6 +120,7 @@ let chint = '一二三四五六七八九十'
 
 function mapLooker (dex) {
   let result = []
+  console.log(dex)
   dex.splice(0, 1)
   if (dex[0]) {
     let mapID
@@ -134,11 +135,14 @@ function mapLooker (dex) {
           if (dex[0].match(name)) {
             mapID = alias[0]
           }
+          console.log(dex[1])
+          console.log(mapID)
           if (isNaN(dex[1])) {
             mapID += dex[1]
           } else {
             mapID += chint.indexOf(dex[1]) + 1
           }
+          console.log(mapID)
         })
       })
     }
