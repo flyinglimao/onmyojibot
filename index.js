@@ -40,7 +40,7 @@ let cmdNotFound =
 app.post('/in', (req, res) => {
   let data = req.body
   console.log(req.isXHub)
-  console.log(req.isXHubValid)
+  console.log(req.isXHubValid())
   console.log(JSON.stringify(req.headers))
   if (data.object === 'page') {
     data.entry.forEach((entry) => {
