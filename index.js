@@ -62,7 +62,6 @@ app.post('/in', (req, res) => {
               console.log(' Bad Msg, type should be string or object')
             }
           })
-        }
         } else { console.log(' Error ') }
       })
     })
