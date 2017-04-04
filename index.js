@@ -37,9 +37,6 @@ let cmdNotFound =
 
 app.post('/in', (req, res) => {
   let data = req.body
-  let verify = crypto.createHmac('sha1', token)
-  verify.update(data, 'utf-8')
-  console.log(verify.digest('hex'))
   console.log(JSON.stringify(data))
   console.log(JSON.stringify(req.headers))
   if (data.object === 'page') {
