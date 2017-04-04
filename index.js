@@ -42,7 +42,11 @@ app.post('/in', (req, res) => {
         if (event.message) {
           let reply = looker(event.message.text)
           reply.forEach((msg) => {
-            sendMsg(event.sender.id, msg)
+            if (typeof (msg) === 'string') {
+              sendMsg(event.sender.id, msg)
+            } else if (typeof (msg) === 'object') {
+              sendMsg(event.sender.id, msg.payload, msg.type)
+            }
           })
         } else { console.log(' Error ') }
       })
@@ -91,6 +95,9 @@ function looker (input) {
     case '留言':
       comment(input)
       reply = reply.concat(autoReply)
+      break
+    case '下載':
+      reply = reply.concat('https://pa-da.github.io/onmyojibot/1_0_35.apk')
       break
     default:
       reply = reply.concat(cmdNotFound)
@@ -156,21 +163,21 @@ function mapLooker (dex) {
 function illLooker (dex) {
   let result = []
   if (dex) {
-    result = result.concat(ill[dex] || 'Sorry, 尚未新增資料' ||  '查無資料，請輸入式神全名（大天狗 ✔；狗狗 ✗)')
+    result = result.concat(ill[dex] || 'Sorry, 尚未新增資料' || '查無資料，請輸入式神全名（大天狗 ✔；狗狗 ✗)')
   } else {
     result = result.concat('沒有給予條件')
   }
   return result
 }
 
-function sendMsg (sender, message, isImg = false) {
+function sendMsg (sender, payload, type = 'text') {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: token },
     method: 'POST',
     json: {
       recipient: { id: sender },
-      message: isImg ? {attachment: { type: 'image', payload: message }} : { text: message }
+      message: type === 'text' ? { text: payload } : {attachment: { type: type, payload: payload }}
     }
   })
 }
