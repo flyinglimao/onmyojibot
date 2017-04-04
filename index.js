@@ -208,7 +208,7 @@ function sendMsg (sender, payload, type = 'text') {
 }
 
 function replycomment (dex) {
-  sendMsg(dex[1], dex[2])
+  sendMsg(dex[1], dex[2], dex[3] || 'text')
 }
 
 function comment (input, sender) {
