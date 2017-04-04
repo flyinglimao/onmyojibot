@@ -40,12 +40,14 @@ app.post('/in', (req, res) => {
     data.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message) {
-          let reply = looker(event.message.text)
+          let reply = looker(event.message.text || 'Except')
           reply.forEach((msg) => {
             if (typeof (msg) === 'string') {
               sendMsg(event.sender.id, msg)
             } else if (typeof (msg) === 'object') {
               sendMsg(event.sender.id, msg.payload, msg.type)
+            } else {
+              console.log(' Bad Msg, type should be string or object')
             }
           })
         } else { console.log(' Error ') }
@@ -98,6 +100,7 @@ function looker (input) {
       break
     case '下載':
       reply = reply.concat('https://pa-da.github.io/onmyojibot/1_0_35.apk')
+      reply = reply.concat('此 APK 由開發者製作，安裝 APK 有其風險，使用前請詳閱公開說明書(x)使用前請確知其風險。\nAPK 版本 1.0.35')
       break
     default:
       reply = reply.concat(cmdNotFound)
