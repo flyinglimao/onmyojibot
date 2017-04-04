@@ -41,7 +41,7 @@ app.post('/in', (req, res) => {
     data.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message) {
-          let reply = looker(event.message.text || 'Except')
+          let reply = looker(event.message.text || 'Except', event.sender.id)
           reply.forEach((msg) => {
             if (typeof (msg) === 'string') {
               sendMsg(event.sender.id, msg)
@@ -84,7 +84,7 @@ app.all('/', (req, res) => {
   res.sendStatus(403)
 })
 
-function looker (input) {
+function looker (input, sender) {
   let spilt = input.match(/\S+/g)
   let reply = []
   switch (spilt[0]) {
@@ -107,12 +107,20 @@ function looker (input) {
       reply = reply.concat(chanel)
       break
     case '留言':
-      comment(input)
+      comment(input, sender)
       reply = reply.concat(autoReply)
       break
     case '下載':
       reply = reply.concat('https://pa-da.github.io/onmyojibot/1_0_35.apk')
       reply = reply.concat('此 APK 由開發者製作，安裝 APK 有其風險，使用前請詳閱公開說明書(x)使用前請確知其風險。\nAPK 版本 1.0.35')
+      break
+    case '回覆':
+      if (sender !== process.env.DEVID) {
+        reply = reply.concat('Permission Denied')
+      } else {
+        replycomment(spilt)
+        reply = reply.concat('已送出')
+      }
       break
     default:
       reply = reply.concat(cmdNotFound)
@@ -197,8 +205,13 @@ function sendMsg (sender, payload, type = 'text') {
   })
 }
 
-function comment (input) {
+function replycomment (dex) {
+  sendMsg(dex[1], dex[2])
+}
+
+function comment (input, sender) {
   sendMsg(process.env.DEVID, input)
+  sendMsg(process.env.DEVID, `來自${sender}`)
 }
 
 app.listen(port, () => { console.log(`Listening to ${port}`) })
