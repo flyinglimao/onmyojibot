@@ -202,7 +202,7 @@ function sendMsg (sender, payload, type = 'text') {
     method: 'POST',
     json: {
       recipient: { id: sender },
-      message: type === 'text' ? { text: payload } : {attachment: { type: type, payload: payload }}
+      message: type === 'text' ? { text: payload } : {attachment: { type: type, payload: {url: payload }}}
     }
   })
 }
