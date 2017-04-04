@@ -40,7 +40,7 @@ app.post('/in', (req, res) => {
     data.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message) {
-          let reply = looker(event.message.text || 'Except')
+          let reply = looker(event.message.text || event.postback.payload || 'Except')
           reply.forEach((msg) => {
             if (typeof (msg) === 'string') {
               sendMsg(event.sender.id, msg)
