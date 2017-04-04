@@ -7,6 +7,7 @@ const crypto = require('crypto')
 const app = express()
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'null'
+const appToken = process.env.APPTOKEN || 'null'
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -36,7 +37,10 @@ let cmdNotFound =
 `無法辨識指令，輸入 幫助 查看哪些指令可以用`
 
 app.post('/in', (req, res) => {
+  let verify = crypto.createHmac('sha1', appToken)
   let data = req.body
+  verify.update(data, 'utf-8')
+  console.log(verify.digest('hex'))
   console.log(JSON.stringify(data))
   console.log(JSON.stringify(req.headers))
   if (data.object === 'page') {
