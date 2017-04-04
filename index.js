@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'null'
 const appToken = process.env.APPTOKEN || 'null'
 
-app.use(bodyParser.json())
+app.use(bodyParser.raw())
 app.use(bodyParser.urlencoded({extended: true}))
 
 let wanted = require('./wanted.js')
