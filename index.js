@@ -36,6 +36,7 @@ let cmdNotFound =
 
 app.post('/in', (req, res) => {
   let data = req.body
+  console.log(JSON.stringify(data))
   if (data.object === 'page') {
     data.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
