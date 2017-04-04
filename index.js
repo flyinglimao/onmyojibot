@@ -42,7 +42,7 @@ app.post('/in', (req, res) => {
   console.log(req.isXHub)
   console.log(req.isXHubValid())
   console.log(JSON.stringify(req.headers))
-  if (data.object === 'page') {
+  if ( req.isXHub && req.isXHubValid && data.object === 'page') {
     data.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message) {
