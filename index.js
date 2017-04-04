@@ -2,14 +2,15 @@ const express = require('express')
 const request = require('request')
 const bodyParser = require('body-parser')
 const path = require('path')
-const crypto = require('crypto')
+const xhub = require('express-x-hub')
 
 const app = express()
 const port = process.env.PORT || 3000
 const token = process.env.TOKEN || 'null'
 const appToken = process.env.APPTOKEN || 'null'
 
-app.use(bodyParser.raw())
+app.use(xhub({algorithm: 'sha1', secret: appToken}))
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
 let wanted = require('./wanted.js')
@@ -38,7 +39,8 @@ let cmdNotFound =
 
 app.post('/in', (req, res) => {
   let data = req.body
-  console.log(data.toString('hex'))
+  console.log(req.isXHub)
+  console.log(req.isXHubValid)
   console.log(JSON.stringify(req.headers))
   if (data.object === 'page') {
     data.entry.forEach((entry) => {
