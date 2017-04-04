@@ -154,9 +154,8 @@ function mapLooker (dex) {
 
 function illLooker (dex) {
   let result = []
-  dex.splice(0, 1)
-  if (dex[0]) {
-    result = result.concat(ill[dex[0]] || '查無資料，請輸入式神全名（大天狗 ✔；狗狗 ✗)')
+  if (dex) {
+    result = result.concat(ill[dex] || '查無資料，請輸入式神全名（大天狗 ✔；狗狗 ✗)')
   } else {
     result = result.concat('沒有給予條件')
   }
