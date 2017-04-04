@@ -39,9 +39,7 @@ let cmdNotFound =
 
 app.post('/in', (req, res) => {
   let data = req.body
-  console.log(req.isXHub)
-  console.log(req.isXHubValid())
-  if ( req.isXHub && req.isXHubValid && data.object === 'page') {
+  if ( req.isXHub && req.isXHubValid() && data.object === 'page') {
     data.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message) {
