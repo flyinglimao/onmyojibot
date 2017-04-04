@@ -40,8 +40,8 @@ app.post('/in', (req, res) => {
   if (data.object === 'page') {
     data.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
-        if (event.message || event.postback) {
-          let reply = looker(event.message.text || event.postback.payload || 'Except')
+        if (event.message) {
+          let reply = looker(event.message.text || 'Except')
           reply.forEach((msg) => {
             if (typeof (msg) === 'string') {
               sendMsg(event.sender.id, msg)
@@ -51,6 +51,18 @@ app.post('/in', (req, res) => {
               console.log(' Bad Msg, type should be string or object')
             }
           })
+        } else if (event.postback) {
+          let reply = looker(event.postback.payload || 'Except')
+          reply.forEach((msg) => {
+            if (typeof (msg) === 'string') {
+              sendMsg(event.sender.id, msg)
+            } else if (typeof (msg) === 'object') {
+              sendMsg(event.sender.id, msg.payload, msg.type)
+            } else {
+              console.log(' Bad Msg, type should be string or object')
+            }
+          })
+        }
         } else { console.log(' Error ') }
       })
     })
