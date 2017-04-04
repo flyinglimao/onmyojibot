@@ -204,6 +204,12 @@ function sendMsg (sender, payload, type = 'text') {
       recipient: { id: sender },
       message: type === 'text' ? { text: payload } : {attachment: { type: type, payload: {url: payload }}}
     }
+  }, (err, res, body) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(body)
+    }
   })
 }
 
