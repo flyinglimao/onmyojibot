@@ -240,6 +240,7 @@ function blurLooker (dex) {
     result = result.concat(tmp, `若要查詢圖鑑請輸入「圖鑑 ${dex[1]}」`)
   } else {
     tmp = wantedLooker(dex)
+    console.log(tmp)
     if (tmp) {
       result = result.concat(tmp)
     } else {
