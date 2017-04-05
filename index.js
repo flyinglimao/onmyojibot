@@ -14,6 +14,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
 let wanted = require('./wanted.js')
+let simpleWanted = require('./simplewanted.js')
 let hint = require('./hint.js')
 let map = require('./map.js')
 let ill = require('./ill.js')
@@ -130,6 +131,18 @@ function looker (input, sender) {
   return reply
 }
 
+function wantedSelector (dex) {
+  let result = []
+  if (dex[1]) {
+    if (['全', '全部', 'all', 'ALL', 'All', '所有'].indexOf(dex[2]) + 1) {
+      result = result.concat(wanted[dex[1]])
+    } else {
+      result = result.concat(simpleWanted[dex[1]])
+    }
+  }
+  return result
+}
+
 function wantedLooker (dex) {
   let result = []
   if (dex[1]) {
@@ -225,8 +238,8 @@ function blurLooker (dex) {
   let result = []
   dex = ['null'].concat(dex)
   let tmp = []
-  tmp = wanted[dex[1]]
-  if (tmp) {
+  tmp = wantedSelector(dex)
+  if (tmp.length) {
     result = result.concat(tmp, `若要查詢圖鑑請輸入「圖鑑 ${dex[1]}」`)
   } else {
     tmp = wantedLooker(dex)
@@ -235,7 +248,7 @@ function blurLooker (dex) {
     } else {
       tmp = mapLooker(dex)
       if (tmp.length) {
-        result = result.concat(tmp)  
+        result = result.concat(tmp)
       } else {
         result = result.concat(cmdNotFound)
         comment(`未知指令${dex.join(' ')}`, null)
