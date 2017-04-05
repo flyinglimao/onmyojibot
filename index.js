@@ -155,7 +155,7 @@ function mapLooker (dex) {
   if (dex[1]) {
     let mapID
     map.alias.forEach((alias) => {
-      if (dex[1] in alias) {
+      if (alias.indexOf(dex[1]) + 1) {
         mapID = alias[0]
       }
     })
