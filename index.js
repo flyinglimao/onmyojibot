@@ -159,22 +159,12 @@ function mapLooker (dex) {
         mapID = alias[0]
       }
     })
-    if (!mapID) {
-      map.alias.forEach((alias) => {
-        (function () {
-          alias.forEach((name) => {
-            if (dex[1].match(name)) {
-              mapID = alias[0]
-              if (!isNaN(dex[2])) {
-                mapID += dex[2]
-              } else {
-                mapID += chint.indexOf(dex[2]) + 1
-              }
-              return 0
-            }
-          })
-        })()
-      })
+    if (dex[2]) {
+      if (!isNaN(dex[2])) {
+        mapID += dex[2]
+      } else {
+        mapID += chint.indexOf(dex[2]) + 1
+      }
     }
     result = result.concat(map.data[mapID] || '查無資料，若查詢御魂請以空白間隔層數（如：御魂 10），秘聞尚無資料')
   }
@@ -243,8 +233,13 @@ function blurLooker (dex) {
     if (tmp.length) {
       result = result.concat(tmp)
     } else {
-      result = result.concat(cmdNotFound)
-      comment(`未知指令${dex.join(' ')}`, null)
+      tmp = mapLooker(dex)
+      if (tmp.length) {
+        result = result.concat(tmp)  
+      } else {
+        result = result.concat(cmdNotFound)
+        comment(`未知指令${dex.join(' ')}`, null)
+      }
     }
   }
   return result
