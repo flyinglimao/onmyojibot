@@ -135,7 +135,7 @@ function wantedSelector (dex) {
   let result = []
   if (dex[1]) {
     if (['全', '全部', 'all', 'ALL', 'All', '所有'].indexOf(dex[2]) + 1) {
-      result = result.concat(wanted[dex[1]])
+      result = result.concat(wanted[dex[1]], '目前顯示精簡版，完整版請輸入「懸賞 <名稱> 全」')
     } else {
       result = result.concat(simpleWanted[dex[1]])
     }
