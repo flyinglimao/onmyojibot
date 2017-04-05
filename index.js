@@ -132,12 +132,11 @@ function looker (input, sender) {
 
 function wantedLooker (dex) {
   let result = []
-  dex.splice(0, 1)
-  if (dex[0]) {
-    let mat = hint[dex[0]] || []
-    if (dex.length > 1) {
-      dex.forEach((clue) => {
-        let tmp = hint[clue]
+  if (dex[1]) {
+    let mat = hint[dex[1]] || []
+    if (dex.length >= 3) {
+      for (let index = 1; index <= dex.length, index++) {
+        let tmp = hint[dex[index]]
         mat.forEach((sp) => {
           if (!(sp in tmp)) { mat.splice(mat.indexOf(sp), 1) }
         })
@@ -153,11 +152,10 @@ let chint = '一二三四五六七八九十'
 
 function mapLooker (dex) {
   let result = []
-  dex.splice(0, 1)
-  if (dex[0]) {
+  if (dex[1]) {
     let mapID
     map.alias.forEach((alias) => {
-      if (dex[0] in alias) {
+      if (dex[1] in alias) {
         mapID = alias[0]
       }
     })
@@ -165,12 +163,12 @@ function mapLooker (dex) {
       map.alias.forEach((alias) => {
         (function () {
           alias.forEach((name) => {
-            if (dex[0].match(name)) {
+            if (dex[1].match(name)) {
               mapID = alias[0]
-              if (!isNaN(dex[1])) {
-                mapID += dex[1]
+              if (!isNaN(dex[2])) {
+                mapID += dex[2]
               } else {
-                mapID += chint.indexOf(dex[1]) + 1
+                mapID += chint.indexOf(dex[2]) + 1
               }
               return 0
             }
