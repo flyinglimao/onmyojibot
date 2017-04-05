@@ -95,16 +95,16 @@ function looker (input, sender) {
       reply = reply.concat(help)
       break
     case '懸賞':
-      reply = reply.concat(wanted[spilt[1]] || '查無資料，請確定目標名稱正確，查詢線索請使用 線索 (條件)')
+      reply = reply.concat(wantedSelector(spilt) || '查無資料，請確認式神名稱是否正確，也可能是尚無資料')
       break
     case '副本':
-      reply = reply.concat(mapLooker(spilt) || '沒有給予條件')
+      reply = reply.concat(mapLooker(spilt) || '查無資料，請確認副本名稱是否正確(如第一章、番外一)')
       break
     case '圖鑑':
-      reply = reply.concat(illLooker(spilt[1]) || '查無資料，請確定式神名稱正確，也可能是尚無資料')
+      reply = reply.concat(illLooker(spilt[1]) || '查無資料，請確定式神名稱是否正確，也可能是尚無資料')
       break
     case '線索':
-      reply = reply.concat(wantedLooker(spilt) || '沒有給予條件')
+      reply = reply.concat(wantedLooker(spilt) || '查無資料，請確認線索是否正確，也可能是尚無資料')
       break
     case '頻道':
       reply = reply.concat(chanel)
@@ -160,7 +160,7 @@ function wantedLooker (dex) {
       }
     }
     if (mat.length >= 1 || dex[0] === '線索') { result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料')) }
-    if (mat.length === 1) { result = result.concat(wanted[mat[0]]) }
+    if (mat.length === 1) { result = result.concat(wantedSelector(['懸賞',mat[0]]) }
   }
   return result
 }
