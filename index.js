@@ -166,7 +166,7 @@ function mapLooker (dex) {
         mapID += chint.indexOf(dex[2]) + 1
       }
     }
-    if (dex[0] === '副本') { result = result.concat(map.data[mapID] || '查無資料，若查詢御魂請以空白間隔層數（如：御魂 10），秘聞尚無資料') }
+    if (mapID || dex[0] === '副本') { result = result.concat(map.data[mapID] || '查無資料，若查詢御魂請以空白間隔層數（如：御魂 10），秘聞尚無資料') }
   }
   return result
 }
