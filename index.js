@@ -142,10 +142,8 @@ function wantedLooker (dex) {
         })
       }
     }
-    if (dex[0] === '線索') {
-      result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料'))
-      if (mat.length === 1) { result = result.concat(wanted[mat[0]]) }
-    }
+    if (mat.length >= 1 || dex[0] === '線索') { result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料')) }
+    if (mat.length === 1) { result = result.concat(wanted[mat[0]]) }
   }
   return result
 }
