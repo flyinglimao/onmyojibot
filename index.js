@@ -39,7 +39,7 @@ let cmdNotFound =
 
 app.post('/in', (req, res) => {
   let data = req.body
-  if ( req.isXHub && req.isXHubValid() && data.object === 'page') {
+  if (req.isXHub && req.isXHubValid() && data.object === 'page') {
     data.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message) {
@@ -97,13 +97,13 @@ function looker (input, sender) {
       reply = reply.concat(wanted[spilt[1]] || '查無資料，請確定目標名稱正確，查詢線索請使用 線索 (條件)')
       break
     case '副本':
-      reply = reply.concat(mapLooker(spilt))
+      reply = reply.concat(mapLooker(spilt) || '沒有給予條件')
       break
     case '圖鑑':
-      reply = reply.concat(illLooker(spilt[1]))
+      reply = reply.concat(illLooker(spilt[1]) || '查無資料，請確定式神名稱正確，也可能是尚無資料')
       break
     case '線索':
-      reply = reply.concat(wantedLooker(spilt))
+      reply = reply.concat(wantedLooker(spilt) || '沒有給予條件')
       break
     case '頻道':
       reply = reply.concat(chanel)
@@ -125,7 +125,7 @@ function looker (input, sender) {
       }
       break
     default:
-      reply = reply.concat(cmdNotFound)
+      reply = reply.concat(blurLooker(spilt))
   }
   return reply
 }
@@ -145,7 +145,7 @@ function wantedLooker (dex) {
     }
     result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料'))
     if (mat.length === 1) { result = result.concat(wanted[mat[0]]) }
-  } else { result = result.concat('沒有給予條件') }
+  }
   return result
 }
 
@@ -179,8 +179,6 @@ function mapLooker (dex) {
       })
     }
     result = result.concat(map.data[mapID] || '查無資料，若查詢御魂請以空白間隔層數（如：御魂 10），秘聞尚無資料')
-  } else {
-    result = result.concat('沒有給予條件')
   }
   return result
 }
@@ -196,13 +194,26 @@ function illLooker (dex) {
 }
 
 function sendMsg (sender, payload, type = 'text') {
+  let out
+  if (type === 'text') {
+    out = {text: payload}
+  } else {
+    out = {
+      attachment: {
+        type: type,
+        payload: {
+          url: payload
+        }
+      }
+    }
+  }
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: token },
     method: 'POST',
     json: {
       recipient: { id: sender },
-      message: type === 'text' ? { text: payload } : {attachment: { type: type, payload: {url: payload }}}
+      message: payload
     }
   }, (err, res, body) => {
     if (err) {
@@ -219,7 +230,26 @@ function replycomment (dex) {
 
 function comment (input, sender) {
   sendMsg(process.env.DEVID, input)
-  sendMsg(process.env.DEVID, `來自${sender}`)
+  if (sender) sendMsg(process.env.DEVID, `來自${sender}`)
+}
+
+function blurLooker (dex) {
+  let result = []
+  dex = ['null'].concat(dex)
+  let tmp = []
+  tmp = wanted[dex[1]]
+  if (tmp) {
+    result = result.concat(tmp, `若要查詢圖鑑請輸入「圖鑑 ${dex[1]}」`)
+  } else {
+    tmp = wantedLooker(dex)
+    if (tmp) {
+      result = result.concat(tmp)
+    } else {
+      result = result.concat(cmdNotFound)
+      comment(`未知指令${dex.join(' ')}`, null)
+    }
+  }
+  return result
 }
 
 app.listen(port, () => { console.log(`Listening to ${port}`) })
