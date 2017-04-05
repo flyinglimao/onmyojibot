@@ -213,7 +213,7 @@ function sendMsg (sender, payload, type = 'text') {
     method: 'POST',
     json: {
       recipient: { id: sender },
-      message: payload
+      message: out
     }
   }, (err, res, body) => {
     if (err) {
