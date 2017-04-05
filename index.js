@@ -95,16 +95,20 @@ function looker (input, sender) {
       reply = reply.concat(help)
       break
     case '懸賞':
-      reply = reply.concat(wantedSelector(spilt) || '查無資料，請確認式神名稱是否正確，也可能是尚無資料')
+      reply = reply.concat(wantedSelector(spilt))
+      if (!reply.length) { reply = reply.concat('查無資料，請確認式神名稱是否正確，也可能是尚無資料') }
       break
     case '副本':
-      reply = reply.concat(mapLooker(spilt) || '查無資料，請確認副本名稱是否正確(如第一章、番外一)')
+      reply = reply.concat(mapLooker(spilt))
+      if (!reply.length) { reply = reply.concat('查無資料，請確認副本名稱是否正確(如第一章、番外一)，也可能是尚無資料') }
       break
     case '圖鑑':
-      reply = reply.concat(illLooker(spilt[1]) || '查無資料，請確定式神名稱是否正確，也可能是尚無資料')
+      reply = reply.concat(illLooker(spilt[1]))
+      if (!reply.length) { reply = reply.concat('查無資料，請確認式神名稱是否正確，也可能是尚無資料') }
       break
     case '線索':
-      reply = reply.concat(wantedLooker(spilt) || '查無資料，請確認線索是否正確，也可能是尚無資料')
+      reply = reply.concat(wantedLooker(spilt))
+      if (!reply.length) { reply = reply.concat('查無資料，請確認線索是否正確，也可能是尚無資料') }
       break
     case '頻道':
       reply = reply.concat(chanel)
@@ -196,8 +200,6 @@ function illLooker (dex) {
   let result = []
   if (dex) {
     result = result.concat(ill[dex] || 'Sorry, 尚未新增資料' || '查無資料，請輸入式神全名（大天狗 ✔；狗狗 ✗)')
-  } else {
-    result = result.concat('沒有給予條件')
   }
   return result
 }
