@@ -135,7 +135,7 @@ function wantedLooker (dex) {
   if (dex[1]) {
     let mat = hint[dex[1]] || []
     if (dex.length >= 3) {
-      for (let index = 1; index <= dex.length, index++) {
+      for (let index = 1; index <= dex.length; index++) {
         let tmp = hint[dex[index]]
         mat.forEach((sp) => {
           if (!(sp in tmp)) { mat.splice(mat.indexOf(sp), 1) }
