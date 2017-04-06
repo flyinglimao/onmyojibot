@@ -107,6 +107,7 @@ function looker (input, sender) {
       if (!reply.length) { reply = reply.concat('查無資料，請確認式神名稱是否正確，也可能是尚無資料') }
       break
     case '線索':
+    case '提示':
       reply = reply.concat(wantedLooker(spilt))
       if (!reply.length) { reply = reply.concat('查無資料，請確認線索是否正確，也可能是尚無資料') }
       break
