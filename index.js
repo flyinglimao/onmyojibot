@@ -160,16 +160,12 @@ function wantedLooker (dex) {
   let result = []
   if (dex[1]) {
     let mat = hint[dex[1]] || []
-    if (dex.length >= 3) {
-      for (let index = 1; index <= dex.length; index++) {
-        let tmp = hint[dex[index]]
-        mat.forEach((sp) => {
-          if (!(sp in tmp)) { mat.splice(mat.indexOf(sp), 1) }
-        })
-      }
+    if (dex[2]) {
+      let mat2 = hint[dex[2]]
+      mat = compare(mat, mat2)
     }
     if (mat.length >= 1 || dex[0] === '線索') { result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料')) }
-    if (mat.length === 1) { result = result.concat(wantedSelector(['懸賞',mat[0]])) }
+    if (mat.length === 1) { result = result.concat(wantedSelector(['懸賞', mat[0]])) }
   }
   return result
 }
@@ -267,6 +263,16 @@ function blurLooker (dex) {
     }
   }
   return result
+}
+
+function compare (a, b) {
+  let c = []
+  a.forEach((child) => {
+    if (b.indexOf(child) !== -1) {
+      c = c.concat(child)
+    }
+  })
+  return c
 }
 
 app.listen(port, () => { console.log(`Listening to ${port}`) })
