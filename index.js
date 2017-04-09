@@ -212,7 +212,6 @@ function mapLooker (dex) {
 }
 
 function illLooker (dex, sender) {
-  console.log(dex[1])
   request.get({
     uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
     qs: {
@@ -258,6 +257,12 @@ function illLooker (dex, sender) {
                 ]
               }
             }
+          }
+        }, (err, res, body) => {
+          if (err) {
+            console.log(err)
+          } else {
+            console.log(body)
           }
         })
       } else {
