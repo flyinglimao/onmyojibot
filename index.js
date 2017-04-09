@@ -245,16 +245,18 @@ function illLooker (dex, sender) {
             recipient: { id: sender },
             message: {
               type: 'template',
-              payload: {
-                template_type: 'list',
-                elements: element,
-                buttons: [
-                  {
-                    title: '完整圖鑑',
-                    type: 'web_url',
-                    'url': 'https://www.onmyojigame.com/zh/role/266.html'
-                  }
-                ]
+              attachment: {
+                payload: {
+                  template_type: 'list',
+                  elements: element,
+                  buttons: [
+                    {
+                      title: '完整圖鑑',
+                      type: 'web_url',
+                      'url': 'https://www.onmyojigame.com/zh/role/266.html'
+                    }
+                  ]
+                }
               }
             }
           }
