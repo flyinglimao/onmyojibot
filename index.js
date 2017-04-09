@@ -117,12 +117,9 @@ function looker (input, sender) {
       if (!reply.length) { reply = reply.concat('查無資料，請確認副本名稱是否正確(如第一章、番外一)，也可能是尚無資料') }
       break
     case '圖鑑':
-      if (tester.indexOf(sender.toString()) !== -1) {
-        reply = reply.concat('圖鑑查詢中，請稍等')
-        illLooker(spilt, sender)
-      } else {
-        reply = reply.concat('尚未開放')
-      }
+      reply = reply.concat('圖鑑查詢中，請稍等')
+      illLooker(spilt, sender)
+      break
       break
     case '線索':
     case '提示':
@@ -213,7 +210,7 @@ function mapLooker (dex) {
 
 function illLooker (dex, sender) {
   request.get({
-    uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
+      uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
     qs: {
       table: 'ill',
       name: dex[1]
@@ -253,7 +250,7 @@ function illLooker (dex, sender) {
                     {
                       title: '完整圖鑑',
                       type: 'web_url',
-                      'url': 'https://www.onmyojigame.com/zh/role/266.html'
+                      url: body.full
                     }
                   ]
                 }
