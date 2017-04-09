@@ -17,7 +17,21 @@ let wanted = require('./wanted.js')
 let simpleWanted = require('./simplewanted.js')
 let hint = require('./hint.js')
 let map = require('./map.js')
-let ill = require('./ill.js')
+let tester = []
+
+request.get({
+  uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
+  qs: {
+    table: 'tester'
+  },
+  json: true
+}, (err, res, body) => {
+  if (err) {
+    console.log('failed to get tester list')
+  } else {
+    tester = body
+  }
+})
 
 let chanel =
 `章魚單車頻道：4747
@@ -103,7 +117,10 @@ function looker (input, sender) {
       if (!reply.length) { reply = reply.concat('查無資料，請確認副本名稱是否正確(如第一章、番外一)，也可能是尚無資料') }
       break
     case '圖鑑':
-      reply = reply.concat(illLooker(spilt[1]))
+      if (tester.indexOf(sender) !== -1) {
+        reply = reply.concat('圖鑑查詢中，請稍等')
+        illLooker(spilt, sender)
+      }
       if (!reply.length) { reply = reply.concat('查無資料，請確認式神名稱是否正確，也可能是尚無資料') }
       break
     case '線索':
@@ -193,12 +210,59 @@ function mapLooker (dex) {
   return result
 }
 
-function illLooker (dex) {
-  let result = []
-  if (dex) {
-    result = result.concat(ill[dex] || 'Sorry, 尚未新增資料' || '查無資料，請輸入式神全名（大天狗 ✔；狗狗 ✗)')
-  }
-  return result
+function illLooker (dex, sender) {
+  request.get({
+    uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
+    qs: {
+      table: 'ill',
+      name: dex[1]
+    },
+    json: true
+  }, (err, res, body) => {
+    if (err) {
+      comment('illustration error')
+      sendMsg(sender, '圖鑑查訊出錯，已自動回報開發者')
+    } else {
+      if (body.success) {
+        let element = [{
+          title: body.name,
+          image_url: body.image
+        }]
+        for (let index = 0; index < 3; index++) {
+          if (body.skills[index]) {
+            element[index + 1] = {
+              title: body.skills[index],
+              subtitle: body.skilldes[index]
+            }
+          }
+        }
+        request({
+          uri: 'https://graph.facebook.com/me/messages',
+          qs: { access_token: token },
+          method: 'POST',
+          json: {
+            recipient: { id: sender },
+            message: {
+              type: 'template',
+              payload: {
+                template_type: 'list',
+                elements: element,
+                buttons: [
+                  {
+                    title: '完整圖鑑',
+                    type: 'web_url',
+                    'url': 'https://www.onmyojigame.com/zh/role/266.html'
+                  }
+                ]
+              }
+            }
+          }
+        })
+      } else {
+        sendMsg(sender, '查無資料，請確認名稱是否正確，或者尚未收錄該式神')
+      }
+    }
+  })
 }
 
 function sendMsg (sender, payload, type = 'text') {
