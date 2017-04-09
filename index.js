@@ -244,8 +244,8 @@ function illLooker (dex, sender) {
           json: {
             recipient: { id: sender },
             message: {
-              type: 'template',
               attachment: {
+                type: 'template',
                 payload: {
                   template_type: 'list',
                   elements: element,
