@@ -117,11 +117,12 @@ function looker (input, sender) {
       if (!reply.length) { reply = reply.concat('查無資料，請確認副本名稱是否正確(如第一章、番外一)，也可能是尚無資料') }
       break
     case '圖鑑':
-      if (tester.indexOf(sender) !== -1) {
+      if (tester.indexOf(sender.toString()) !== -1) {
         reply = reply.concat('圖鑑查詢中，請稍等')
         illLooker(spilt, sender)
+      } else {
+        reply = reply.concat('尚未開放')
       }
-      if (!reply.length) { reply = reply.concat('查無資料，請確認式神名稱是否正確，也可能是尚無資料') }
       break
     case '線索':
     case '提示':
@@ -211,6 +212,7 @@ function mapLooker (dex) {
 }
 
 function illLooker (dex, sender) {
+  console.log(dex[1])
   request.get({
     uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
     qs: {
