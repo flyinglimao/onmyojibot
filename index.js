@@ -66,7 +66,6 @@ app.post('/in', (req, res) => {
               sendMsg(event.sender.id, msg.payload, msg.type)
             } else {
               console.log(' Bad Msg, type should be string or object')
-              console.log(typeof (msg))
             }
           })
         } else if (event.postback) {
@@ -156,13 +155,11 @@ function wantedSelector (dex) {
   let result = []
   let tmp = []
   if (dex[1]) {
-    if (['全', '全部', 'all', 'ALL', 'All', '所有'].indexOf(dex[2]) + 1) {
+    if (['全', '全部', 'all', 'ALL', 'All', '所有'].indexOf(dex[2]) !== -1) {
       tmp = tmp.concat(wanted[dex[1]])
     } else {
       if (simpleWanted[dex[1]]) {
         tmp = tmp.concat(simpleWanted[dex[1]], `目前顯示精簡版，完整版請輸入「懸賞 ${dex[1]} 全」`)
-        console.log(simpleWanted[dex[1]])
-        console.log(dex[1])
       }
     }
   }
@@ -259,8 +256,6 @@ function illLooker (dex, sender) {
         }, (err, res, body) => {
           if (err) {
             console.log(err)
-          } else {
-            console.log(body)
           }
         })
       } else {
@@ -295,8 +290,6 @@ function sendMsg (sender, payload, type = 'text') {
   }, (err, res, body) => {
     if (err) {
       console.log(err)
-    } else {
-      console.log(body)
     }
   })
 }
