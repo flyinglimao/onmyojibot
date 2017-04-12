@@ -177,7 +177,7 @@ function wantedLooker (dex) {
     let mat = hint[dex[1]] || []
     if (dex[2]) {
       let mat2 = hint[dex[2]]
-      mat = compare(mat, mat2)
+      if (mat.length && mat2.length)mat = compare(mat, mat2)
     }
     if (mat.length >= 1 || dex[0] === '線索') { result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料')) }
     if (mat.length === 1) { result = result.concat(wantedSelector(['懸賞', mat[0]])) }
