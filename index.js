@@ -66,6 +66,7 @@ app.post('/in', (req, res) => {
               sendMsg(event.sender.id, msg.payload, msg.type)
             } else {
               console.log(' Bad Msg, type should be string or object')
+              console.log(typeof (msg))
             }
           })
         } else if (event.postback) {
