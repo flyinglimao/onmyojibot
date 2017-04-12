@@ -156,8 +156,6 @@ function wantedSelector (dex) {
   let tmp = []
   if (dex[1]) {
     if (['全', '全部', 'all', 'ALL', 'All', '所有'].indexOf(dex[2]) + 1) {
-      console.log(dex[1])
-      console.log(wanted[dex[1]])
       tmp = tmp.concat(wanted[dex[1]])
     } else {
       if (simpleWanted[dex[1]]) {
@@ -177,7 +175,7 @@ function wantedLooker (dex) {
     let mat = hint[dex[1]] || []
     if (dex[2]) {
       let mat2 = hint[dex[2]]
-      if (mat.length && mat2.length)mat = compare(mat, mat2)
+      if (mat && mat2)mat = compare(mat, mat2)
     }
     if (mat.length >= 1 || dex[0] === '線索') { result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料')) }
     if (mat.length === 1) { result = result.concat(wantedSelector(['懸賞', mat[0]])) }
