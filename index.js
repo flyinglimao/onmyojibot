@@ -95,7 +95,6 @@ function looker (input, sender) {
       break
     case '懸賞':
       reply = reply.concat(wantedSelector(spilt))
-      console.log(reply)
       if (!reply.length) { reply = reply.concat('查無資料，請確認式神名稱是否正確，也可能是尚無資料') }
       break
     case '副本':
@@ -142,7 +141,6 @@ function wantedSelector (dex) {
   if (dex[1]) {
     if (['全', '全部', 'all', 'ALL', 'All', '所有'].indexOf(dex[2]) !== -1) {
       tmp = tmp.concat(wanted[dex[1]] || [])
-      console.log(tmp)
     } else {
       if (simpleWanted[dex[1]]) {
         tmp = tmp.concat(simpleWanted[dex[1]], `目前顯示精簡版，完整版請輸入「懸賞 ${dex[1]} 全」`)
@@ -150,7 +148,6 @@ function wantedSelector (dex) {
     }
   }
   if (tmp.length) { result = result.concat(tmp) }
-  console.log(tmp.length)
   return result
 }
 
