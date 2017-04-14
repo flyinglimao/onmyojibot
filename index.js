@@ -141,7 +141,7 @@ function wantedSelector (dex) {
   let tmp = []
   if (dex[1]) {
     if (['全', '全部', 'all', 'ALL', 'All', '所有'].indexOf(dex[2]) !== -1) {
-      tmp = tmp.concat(wanted[dex[1]])
+      tmp = tmp.concat(wanted[dex[1]] || [])
       console.log(tmp)
     } else {
       if (simpleWanted[dex[1]]) {
