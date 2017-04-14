@@ -17,21 +17,6 @@ let wanted = require('./wanted.js')
 let simpleWanted = require('./simplewanted.js')
 let hint = require('./hint.js')
 let map = require('./map.js')
-let tester = []
-
-request.get({
-  uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
-  qs: {
-    table: 'tester'
-  },
-  json: true
-}, (err, res, body) => {
-  if (err) {
-    console.log('failed to get tester list')
-  } else {
-    tester = body
-  }
-})
 
 let chanel =
 `章魚單車頻道：4747
@@ -110,6 +95,7 @@ function looker (input, sender) {
       break
     case '懸賞':
       reply = reply.concat(wantedSelector(spilt))
+      console.log(reply)
       if (!reply.length) { reply = reply.concat('查無資料，請確認式神名稱是否正確，也可能是尚無資料') }
       break
     case '副本':
@@ -119,7 +105,6 @@ function looker (input, sender) {
     case '圖鑑':
       reply = reply.concat('圖鑑查詢中，請稍等')
       illLooker(spilt, sender)
-      break
       break
     case '線索':
     case '提示':
@@ -157,6 +142,7 @@ function wantedSelector (dex) {
   if (dex[1]) {
     if (['全', '全部', 'all', 'ALL', 'All', '所有'].indexOf(dex[2]) !== -1) {
       tmp = tmp.concat(wanted[dex[1]])
+      console.log(tmp)
     } else {
       if (simpleWanted[dex[1]]) {
         tmp = tmp.concat(simpleWanted[dex[1]], `目前顯示精簡版，完整版請輸入「懸賞 ${dex[1]} 全」`)
@@ -164,6 +150,7 @@ function wantedSelector (dex) {
     }
   }
   if (tmp.length) { result = result.concat(tmp) }
+  console.log(tmp.length)
   return result
 }
 
@@ -206,7 +193,7 @@ function mapLooker (dex) {
 
 function illLooker (dex, sender) {
   request.get({
-      uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
+    uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
     qs: {
       table: 'ill',
       name: dex[1]
