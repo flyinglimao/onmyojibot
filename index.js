@@ -144,6 +144,14 @@ function wantedSelector (dex) {
     } else {
       if (simpleWanted[dex[1]]) {
         tmp = tmp.concat(simpleWanted[dex[1]], `目前顯示精簡版，完整版請輸入「懸賞 ${dex[1]} 全」`)
+      } else {
+        let heroes = Object.getOwnPropertyNames(simpleWanted)
+        for (let i = 0; i < heroes.length; i++) {
+          if (heroes[i].match(dex[1])) {
+            tmp = tmp.concat(simpleWanted[dex[1]])
+            break
+          }
+        })
       }
     }
   }
