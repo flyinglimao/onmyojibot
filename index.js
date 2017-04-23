@@ -151,7 +151,7 @@ function wantedSelector (dex) {
             tmp = tmp.concat(simpleWanted[dex[1]])
             break
           }
-        })
+        }
       }
     }
   }
