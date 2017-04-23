@@ -148,7 +148,7 @@ function wantedSelector (dex) {
         let heroes = Object.getOwnPropertyNames(simpleWanted)
         for (let i = 0; i < heroes.length; i++) {
           if (heroes[i].match(dex[1])) {
-            tmp = tmp.concat(simpleWanted[dex[1]])
+            tmp = tmp.concat(simpleWanted[heroes[i]], `目前使用模糊查詢，如不正確請輸入完整名稱`)
             break
           }
         }
