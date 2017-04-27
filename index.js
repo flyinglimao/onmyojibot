@@ -39,11 +39,12 @@ let cmdNotFound =
 
 app.post('/in', (req, res) => {
   let data = req.body
+  res.sendStatus(200)
   if (req.isXHub && req.isXHubValid() && data.object === 'page') {
     data.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message) {
-          let reply = looker(event.message.text || 'Except', event.sender.id)
+          let reply = looker(event.message.text.replace(/[\(\)\\\/\!\$\^\*\?]/g, '') || 'Except', event.sender.id)
           reply.forEach((msg) => {
             if (typeof (msg) === 'string') {
               sendMsg(event.sender.id, msg)
@@ -68,7 +69,6 @@ app.post('/in', (req, res) => {
       })
     })
   }
-  res.sendStatus(200)
 })
 
 app.get('/pp.html', (req, res) => {
