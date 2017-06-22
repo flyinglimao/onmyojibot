@@ -30,7 +30,7 @@ let help =
 副本 第六章 - 顯示副本第六章的分布與金錢經驗掉落
 圖鑑 螢草 - 顯示螢草的圖鑑資料
 頻道 - 顯示特定用途的頻道代碼
-留言 Bug - 對開發者留下訊息，例如報錯
+留言 - 對開發者留下訊息
 幫助 - 顯示本訊息`
 let autoReply =
 `已將您的留言紀錄，但開發者不一定會回覆，請見諒`
@@ -51,7 +51,7 @@ app.post('/in', (req, res) => {
             } else if (typeof (msg) === 'object') {
               sendMsg(event.sender.id, msg.payload, msg.type)
             } else {
-              console.log(' Bad Msg, type should be string or object')
+              console.log('Bad Msg, type should be string or object')
             }
           })
         } else if (event.postback) {
@@ -65,7 +65,7 @@ app.post('/in', (req, res) => {
               console.log(' Bad Msg, type should be string or object')
             }
           })
-        } else { console.log(' Error ') }
+        } else { console.log('Error') }
       })
     })
   }
@@ -116,10 +116,6 @@ function looker (input, sender) {
     case '留言':
       comment(input, sender)
       reply = reply.concat(autoReply)
-      break
-    case '下載':
-      reply = reply.concat('https://pa-da.github.io/onmyojibot/1_0_35.apk')
-      reply = reply.concat('此 APK 由開發者製作，安裝 APK 有其風險，使用前請詳閱公開說明書(x)使用前請確知其風險。\nAPK 版本 1.0.35')
       break
     case '回覆':
       if (sender !== process.env.DEVID) {
