@@ -45,26 +45,32 @@ app.post('/in', (req, res) => {
       entry.messaging.forEach((event) => {
         if (event.message) {
           let reply = looker(event.message.text.replace(/[\(\)\\\/\!\$\^\*\?]/g, '') || 'Except', event.sender.id)
-          reply.forEach((msg) => {
-            if (typeof (msg) === 'string') {
-              sendMsg(event.sender.id, msg)
-            } else if (typeof (msg) === 'object') {
-              sendMsg(event.sender.id, msg.payload, msg.type)
-            } else {
-              console.log('Bad Msg, type should be string or object')
-            }
-          })
+          for (let msglen = 0; msglen < reply.length; msglen++) {
+            setTimeout( ()=>{
+              msg = reply[msglen]
+              if (typeof (msg) === 'string') {
+                sendMsg(event.sender.id, msg)
+              } else if (typeof (msg) === 'object') {
+                sendMsg(event.sender.id, msg.payload, msg.type)
+              } else {
+                console.log('Bad Msg, type should be string or object')
+              }
+            }, msglen*400)
+          }
         } else if (event.postback) {
           let reply = looker(event.postback.payload || 'Except')
-          reply.forEach((msg) => {
-            if (typeof (msg) === 'string') {
-              sendMsg(event.sender.id, msg)
-            } else if (typeof (msg) === 'object') {
-              sendMsg(event.sender.id, msg.payload, msg.type)
-            } else {
-              console.log(' Bad Msg, type should be string or object')
-            }
-          })
+          for (let msglen = 0; msglen < reply.length; msglen++) {
+            setTimeout( ()=>{
+              msg = reply[msglen]
+              if (typeof (msg) === 'string') {
+                sendMsg(event.sender.id, msg)
+              } else if (typeof (msg) === 'object') {
+                sendMsg(event.sender.id, msg.payload, msg.type)
+              } else {
+                console.log('Bad Msg, type should be string or object')
+              }
+            }, msglen*400)
+          }
         } else { console.log('Error') }
       })
     })
