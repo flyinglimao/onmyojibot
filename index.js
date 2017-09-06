@@ -15,8 +15,28 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 let wanted = require('./wanted.js')
 let simpleWanted = require('./simplewanted.js')
-let hint = require('./hint.js')
 let map = require('./map.js')
+
+// Load hints
+let hints = [];
+function hintLoad () {
+  request.get({
+    uri: 'https://script.google.com/macros/s/AKfycbyPRvf6ktvFOc4jpb8-xCaULuonPxKvgWVoYRS46LWXihQaOrY/exec',
+    qs: {
+      table: 'hint',
+      name: dex[1]
+    },
+    json: true},
+    function (err, res, body) {
+      if (err) {
+        comment('Hint loading error')
+        setTimeout(hintLoad, 60000)
+      } else {
+        hints = JSON.parse(body)
+      }
+    }
+  )
+}
 
 let chanel =
 `章魚單車頻道：4747
@@ -37,6 +57,10 @@ let autoReply =
 let cmdNotFound =
 `無法辨識指令，輸入 幫助 查看哪些指令可以用`
 
+Array.prototype.doContain = function (another) {
+  return this.filter((obj)=>{return another.indexOf(obj) !== -1;}).toString() === another.toString()
+}
+
 app.post('/in', (req, res) => {
   let data = req.body
   res.sendStatus(200)
@@ -45,33 +69,24 @@ app.post('/in', (req, res) => {
       entry.messaging.forEach((event) => {
         if (event.message) {
           let reply = looker(event.message.text.replace(/[\(\)\\\/\!\$\^\*\?]/g, '') || 'Except', event.sender.id)
-          for (let msglen = 0; msglen < reply.length; msglen++) {
-            setTimeout( ()=>{
-              msg = reply[msglen]
-              if (typeof (msg) === 'string') {
-                sendMsg(event.sender.id, msg)
-              } else if (typeof (msg) === 'object') {
-                sendMsg(event.sender.id, msg.payload, msg.type)
-              } else {
-                console.log('Bad Msg, type should be string or object')
-              }
-            }, msglen*400)
-          }
         } else if (event.postback) {
           let reply = looker(event.postback.payload || 'Except')
-          for (let msglen = 0; msglen < reply.length; msglen++) {
-            setTimeout( ()=>{
-              msg = reply[msglen]
-              if (typeof (msg) === 'string') {
-                sendMsg(event.sender.id, msg)
-              } else if (typeof (msg) === 'object') {
-                sendMsg(event.sender.id, msg.payload, msg.type)
-              } else {
-                console.log('Bad Msg, type should be string or object')
-              }
-            }, msglen*400)
-          }
-        } else { console.log('Error') }
+        } else {
+          console.log('Error')
+          return 0
+        }
+        for (let msglen = 0; msglen < reply.length; msglen++) {
+          setTimeout(() => {
+            msg = reply[msglen]
+            if (typeof (msg) === 'string') {
+              sendMsg(event.sender.id, msg)
+            } else if (typeof (msg) === 'object') {
+              sendMsg(event.sender.id, msg.payload, msg.type)
+            } else {
+              console.log('Bad Msg, type should be string or object')
+            }
+          }, msglen * 400)
+        }
       })
     })
   }
@@ -163,14 +178,11 @@ function wantedSelector (dex) {
 
 function wantedLooker (dex) {
   let result = []
-  if (dex[1]) {
-    let mat = hint[dex[1]] || []
-    if (dex[2]) {
-      let mat2 = hint[dex[2]]
-      if (mat && mat2)mat = compare(mat, mat2)
-    }
-    if (mat.length >= 1 || dex[0] === '線索') { result = result.concat('查詢結果為: ' + (mat.join(',') || '無資料')) }
-    if (mat.length === 1) { result = result.concat(wantedSelector(['懸賞', mat[0]])) }
+  dex.splice(0,1)
+  if (dex) {
+    hints.forEach((hint) => {
+      if (hint[1].doContain(dex)) result += hint[0]
+    })
   }
   return result
 }
@@ -253,7 +265,7 @@ function illLooker (dex, sender) {
           }
         })
       } else {
-        sendMsg(sender, '查無資料，請確認名稱是否正確，或者尚未收錄該式神')
+        sendMsg(sender, '查無資料，請確認名稱是否正確，或者尚未收錄該式神。官方資料僅到 79 位。')
       }
     }
   })
@@ -314,7 +326,6 @@ function blurLooker (dex) {
         result = result.concat(tmp)
       } else {
         result = result.concat(cmdNotFound)
-        comment(`未知指令${dex.join(' ')}`, null)
       }
     }
   }
